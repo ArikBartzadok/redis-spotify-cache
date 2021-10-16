@@ -1,0 +1,6 @@
+node_modules
+.env
+.env.exemplo
+.git
+.cache
+README.md

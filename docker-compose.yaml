@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  api:
+    build: .
+    container_name: redis-spotify-cache
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    environment:
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - SPOTIFY_TOKEN=${SPOTIFY_TOKEN}
+      
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    networks:
+      - redis-spotify-cache-network
+    depends_on:
+      - redis-cache
+  
+  redis-cache:
+    image: redis
+    container_name: redis
+    restart: on-failure
+    volumes:
+      - redis-data:/data
+    networks:
+      - redis-spotify-cache-network
+
+volumes:
+  redis-data:
+
+networks:
+  redis-spotify-cache-network:
